@@ -49,27 +49,27 @@ IF(MINGW)
   set(CMAKE_CXX_FLAGS_RELEASE "-fno-exceptions -fno-rtti -ffast-math -ffunction-sections -fomit-frame-pointer -mavx -ftree-vectorize -O3 -fwhole-program -flto")
   set(CMAKE_CXX_FLAGS_DEBUG "-g")
 ENDIF()
-
+                     
 find_package(OpenGL)
 find_package(GLEW)
 find_package(GLM)
-find_package(OpenCV)
-
-
+find_package(OpenCV REQUIRED)
+                            
 message("GLEW: " ${GLEW_LIBRARIES})
 message("GLLIB: " ${OPENGL_LIBRARIES})
-#message("DevIL: " ${IL_LIBRARIES})
-message("OpenCV: " ${OpenCV_LIBS})
+message("OpenCV: " ${OpenCV_LIB_DIR})
 
 include_directories(${CMAKE_SOURCE_DIR})
 include_directories(${GLM_INCLUDE_DIRS})
 include_directories(${GLEW_INCLUDE_DIRS})
 include_directories(${OPENGL_INCLUDE_DIRS})
-#include_directories(${IL_INCLUDE_DIR})
 include_directories(${OpenCV_INCLUDE_DIR})
 
 add_executable(OpenCVImageStitching WIN32 ${CPPS} ${INCS} ${GLSL_SRCS})
-target_link_libraries(OpenCVImageStitching ${OpenCV_LIBS} ${GLEW_LIBRARIES} "C:/Program Files (x86)/Microsoft SDKs/Windows/v7.1A/Lib/x64/glu32.lib" "C:/Program Files (x86)/Microsoft SDKs/Windows/v7.1A/Lib/x64/opengl32.lib")
+
+target_link_libraries(OpenCVImageStitching ${OPENGL_LIBRARIES})
+target_link_libraries(OpenCVImageStitching ${OpenCV_LIBS})
+target_link_libraries(OpenCVImageStitching ${GLEW_LIBRARIES})
                                                   
 add_custom_command(TARGET OpenCVImageStitching POST_BUILD        
     COMMAND ${CMAKE_COMMAND} -E copy_directory                      
